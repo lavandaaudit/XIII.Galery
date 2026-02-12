@@ -1,0 +1,440 @@
+:root {
+    --bg-panel: rgba(5, 5, 5, 0.85);
+    --border: rgba(255, 255, 255, 0.15);
+    --text: #ffffff;
+    --accent: #00ff88;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #000;
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+}
+
+#canvas-container {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+}
+
+.ui-overlay {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.header {
+    text-align: left;
+    pointer-events: auto;
+    padding: 1rem;
+}
+
+.header h1 {
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.4rem;
+    opacity: 0.7;
+}
+
+.header p {
+    font-size: 0.5rem;
+    opacity: 0.4;
+    letter-spacing: 0.2rem;
+}
+
+/* NOAA Live Panel - Minimal */
+.noaa-panel {
+    position: fixed;
+    top: 70px;
+    left: 1rem;
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    pointer-events: auto;
+    min-width: 200px;
+}
+
+.noaa-title {
+    font-size: 0.5rem;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    color: #00ffcc;
+    margin-bottom: 0.4rem;
+    text-align: left;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+.noaa-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: transparent;
+    padding: 0.2rem;
+    border-radius: 0;
+    border: none;
+}
+
+.metric .label {
+    font-size: 0.45rem;
+    opacity: 0.5;
+    margin-bottom: 0.1rem;
+}
+
+.metric .value {
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: #00ffcc;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+}
+
+.noaa-desc {
+    font-size: 0.45rem;
+    line-height: 1.3;
+    color: #9affc2;
+    border-top: none;
+    padding-top: 0.3rem;
+    opacity: 0.7;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+.noaa-desc b {
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+/* Unified Bottom Strip */
+.bottom-strip {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    pointer-events: auto;
+    width: auto;
+    background: var(--bg-panel);
+    backdrop-filter: blur(25px);
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    margin: 0 auto 1.5rem auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.divider {
+    width: 1px;
+    height: 30px;
+    background: var(--border);
+    margin: 0 0.5rem;
+}
+
+/* Navigation Cross */
+.nav-cross {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    scale: 0.8;
+}
+
+.vertical-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.horizontal-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cross-mid {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cross-btn,
+.v-btn {
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: white;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: 0.2s;
+}
+
+.v-btn {
+    font-size: 0.7rem;
+}
+
+.cross-btn:hover,
+.v-btn:hover {
+    background: white;
+    color: black;
+}
+
+#joystick-base {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#joystick-thumb {
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    cursor: grab;
+}
+
+/* Light Mixers */
+.light-strip {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.l-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.c-picker-wrapper {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.c-picker-wrapper input[type="color"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.c-icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.mini-range {
+    width: 50px;
+    height: 2px;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.mini-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+}
+
+/* Gallery Nav */
+.gallery-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-arrow {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.nav-arrow:hover {
+    opacity: 1;
+    scale: 1.2;
+}
+
+.g-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+}
+
+#current-type {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1rem;
+}
+
+#current-index {
+    font-size: 0.45rem;
+    opacity: 0.5;
+}
+
+/* Action Strip */
+.action-strip {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.strip-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.strip-btn:hover {
+    background: white;
+    color: black;
+    border-color: white;
+}
+
+#loading-screen {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .bottom-strip {
+        flex-wrap: wrap;
+        border-radius: 20px;
+        justify-content: center;
+        width: 95%;
+        padding: 0.8rem 1rem;
+        gap: 0.8rem;
+    }
+
+    .divider {
+        display: none;
+    }
+
+    .noaa-panel {
+        top: 60px;
+        left: 0.5rem;
+        min-width: 160px;
+        transform: scale(0.85);
+    }
+
+    .header h1 {
+        font-size: 0.8rem;
+        letter-spacing: 0.2rem;
+    }
+
+    .header p {
+        font-size: 0.4rem;
+    }
+
+    .nav-cross {
+        scale: 1;
+    }
+
+    .light-strip {
+        gap: 0.5rem;
+    }
+
+    .gallery-nav {
+        gap: 0.8rem;
+    }
+
+    /* Touch-friendly buttons */
+    .cross-btn,
+    .v-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    #joystick-base {
+        width: 50px;
+        height: 50px;
+    }
+
+    #joystick-thumb {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bottom-strip {
+        flex-direction: column;
+        align-items: center;
+        padding: 0.6rem;
+    }
+
+    .noaa-panel {
+        transform: scale(0.75);
+        left: 0.2rem;
+    }
+
+    .mixer-row,
+    .content-row,
+    .bottom-tools {
+        width: 100%;
+        justify-content: center;
+    }
+}

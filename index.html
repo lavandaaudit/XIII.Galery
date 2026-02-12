@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Інтерактивна 3D-галерея з реактивним освітленням від NOAA космічних даних">
+    <meta name="keywords" content="3D gallery, NOAA, space weather, interactive art, Three.js">
+    <meta name="author" content="Cosmic Gallery">
+    <title>COSMIC GALLERY · NOAA-Powered 3D Art Installation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="ui-overlay">
+        <div class="header">
+            <h1>COSMIC GALLERY</h1>
+            <p>13+13 Multiverse Installation</p>
+        </div>
+
+        <!-- NOAA Live Data Panel -->
+        <div class="noaa-panel">
+            <div class="noaa-title">☀ NOAA LIVE FEED</div>
+            <div class="noaa-grid">
+                <div class="metric">
+                    <span class="label">SSN</span>
+                    <span class="value" id="noaa-ssn">--</span>
+                </div>
+                <div class="metric">
+                    <span class="label">Kp</span>
+                    <span class="value" id="noaa-kp">--</span>
+                </div>
+                <div class="metric">
+                    <span class="label">Bz</span>
+                    <span class="value" id="noaa-bz">--</span>
+                </div>
+                <div class="metric">
+                    <span class="label">Wind</span>
+                    <span class="value" id="noaa-wind">--</span>
+                </div>
+                <div class="metric">
+                    <span class="label">Proton</span>
+                    <span class="value" id="noaa-proton">--</span>
+                </div>
+                <div class="metric">
+                    <span class="label">Flare</span>
+                    <span class="value" id="noaa-flare">None</span>
+                </div>
+            </div>
+            <div class="noaa-desc">
+                <b>⚡ SOLAR LIGHT ENGINE</b><br>
+                Світло генерується з реальних сонячних даних:<br>
+                • SSN керує базовою яскравістю<br>
+                • Kp визначає швидкість пульсації<br>
+                • Bz зміщує спектр (червоний↔синій)<br>
+                • Flares викликають спалахи енергії
+            </div>
+        </div>
+
+        <div class="bottom-strip">
+            <!-- Navigation Cross with Vertical Controls -->
+            <div class="nav-cross">
+                <div class="vertical-nav">
+                    <button class="v-btn" onmousedown="moveCamera('up')" onmouseup="stopCamera()"
+                        title="Вгору">▲</button>
+                    <button class="v-btn" onmousedown="moveCamera('down')" onmouseup="stopCamera()"
+                        title="Вниз">▼</button>
+                </div>
+                <div class="horizontal-nav">
+                    <button class="cross-btn up" onmousedown="moveCamera('forward')" onmouseup="stopCamera()">+</button>
+                    <div class="cross-mid">
+                        <button class="cross-btn left" onmousedown="moveCamera('left')"
+                            onmouseup="stopCamera()">+</button>
+                        <div id="joystick-base">
+                            <div id="joystick-thumb"></div>
+                        </div>
+                        <button class="cross-btn right" onmousedown="moveCamera('right')"
+                            onmouseup="stopCamera()">+</button>
+                    </div>
+                    <button class="cross-btn down" onmousedown="moveCamera('backward')"
+                        onmouseup="stopCamera()">+</button>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Light & FX -->
+            <div class="light-strip">
+                <div class="l-item">
+                    <div class="c-picker-wrapper">
+                        <input type="color" id="color-left" value="#ff2255" onchange="updateLights()">
+                        <div class="c-icon" style="background:#ff2255"></div>
+                    </div>
+                </div>
+                <div class="l-item">
+                    <div class="c-picker-wrapper">
+                        <input type="color" id="color-center" value="#ffffff" onchange="updateLights()">
+                        <div class="c-icon" style="background:#ffffff"></div>
+                    </div>
+                </div>
+                <div class="l-item">
+                    <div class="c-picker-wrapper">
+                        <input type="color" id="color-right" value="#2255ff" onchange="updateLights()">
+                        <div class="c-icon" style="background:#2255ff"></div>
+                    </div>
+                </div>
+                <!-- Dynamic Mode Toggle -->
+                <button id="fx-dynamic" class="strip-btn toggle-fx" onclick="toggleFX()">DYNAMIC: ON</button>
+                <!-- Autopilot Toggle -->
+                <button id="autopilot-btn" class="strip-btn toggle-fx" onclick="toggleAutopilot()">AUTOPILOT:
+                    OFF</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Content Nav -->
+            <div class="gallery-nav">
+                <button class="nav-arrow" onclick="prevContent()">❮</button>
+                <div class="g-info">
+                    <span id="current-type">JPG</span>
+                    <span id="current-index">1/13</span>
+                </div>
+                <button class="nav-arrow" onclick="nextContent()">❯</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Actions -->
+            <div class="action-strip">
+                <button class="strip-btn" onclick="randomContent()">RAND</button>
+                <button class="strip-btn" onclick="resetPosition()">GARDEN</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
